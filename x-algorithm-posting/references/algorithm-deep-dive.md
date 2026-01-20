@@ -11,52 +11,7 @@ Complete technical reference for the X (Twitter) recommendation algorithm.
 - [Filters That Remove Posts](#filters-that-remove-posts)
 - [User Timeline Optimization](#user-timeline-optimization)
 
----
 
-## System Architecture
-
-The "For You" feed operates in a multi-stage pipeline:
-
-```
-User Request
-    ↓
-Query Hydration (fetch user's engagement history)
-    ↓
-Candidate Sourcing (Thunder + Phoenix)
-    ↓
-Hydration (enrich with metadata)
-    ↓
-Pre-Scoring Filters (remove ineligible)
-    ↓
-Scoring (Phoenix ML predictions)
-    ↓
-Selection (top K by score)
-    ↓
-Post-Selection Filters (final safety checks)
-    ↓
-Feed Response
-```
-
----
-
-## Content Sources
-
-### Thunder (In-Network)
-- Posts from accounts you follow
-- Sub-millisecond in-memory lookups
-- 2-day retention window
-- Separates: original posts, replies/retweets, video posts
-- Maximum posts per author limits prevent single-author flooding
-
-### Phoenix Retrieval (Out-of-Network)
-- ML-discovered content from global corpus
-- Two-Tower architecture:
-  - **User Tower**: Encodes your engagement history into embedding
-  - **Candidate Tower**: Encodes all posts into embeddings
-  - **Similarity Search**: Dot product to find top-K matches
-- Your past engagement patterns determine what gets retrieved
-
----
 
 ## Phoenix Scoring Model
 
